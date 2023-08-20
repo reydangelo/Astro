@@ -1,6 +1,6 @@
 import discord
 import sys
-sys.path.append(r'/home/container/cogs')
+sys.path.append(r'')
 from utils import utils
 import lyricsgenius
 from discord.app_commands import Group, command
