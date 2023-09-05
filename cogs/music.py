@@ -1,6 +1,5 @@
 import discord
 import sys
-sys.path.append(r'')
 from utils import utils
 import lyricsgenius
 from discord.app_commands import Group, command
@@ -12,7 +11,7 @@ class music(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    genius = lyricsgenius.Genius('', timeout= 10)
+    genius = lyricsgenius.Genius('genius_api_token', timeout= 10)
 
 
     @app_commands.command(name = 'disconnect')
@@ -35,19 +34,24 @@ class music(commands.Cog):
         await interaction.guild.voice_client.disconnect()
         await interaction.followup.send('Bai!')
 
-        try :
+        if self.client.queues[f"{str(interaction.guild.id)}"]:
 
             self.client.queues.pop(f"{str(interaction.guild.id)}")
+        
+        if str(interaction.guild.id) in self.client.guild_status["active_servers"]:
+
             self.client.guild_status["active_servers"].remove(str(interaction.guild.id))
+
+        if str(interaction.guild.id) in self.client.guild_status["now_playing"]:
+
             self.client.guild_status["now_playing"].remove(str(interaction.guild.id))
 
-        except :
-            
-            pass
+        if str(interaction.guild.id) in self.client.guild_status["loop_song"]:
 
-        try :
             self.client.guild_status["loop_song"].remove(str(interaction.guild.id))
-        except :
+            
+        if str(interaction.guild.id) in self.client.guild_status["loop_queue"]:
+
             self.client.guild_status["loop_queue"].remove(str(interaction.guild.id))
 
         
@@ -220,16 +224,23 @@ class music(commands.Cog):
 		
         try:
             
-        	self.client.queues[str(interaction.guild.id)].clear()
-        	self.client.guild_status["now_playing"].remove(str(interaction.guild.id))
+            self.client.queues[str(interaction.guild.id)].clear()
             
         except:
-            pass
 
-        try :
-            self.client.guild_status["loop_queue"].remove(str(interaction.guild.id))
-        except :
+            pass
+        
+        if str(interaction.guild.id) in self.client.guild_status["now_playing"]:
+
+            self.client.guild_status["now_playing"].remove(str(interaction.guild.id))
+
+        if str(interaction.guild.id) in self.client.guild_status["loop_song"]:
+
             self.client.guild_status["loop_song"].remove(str(interaction.guild.id))
+            
+        if str(interaction.guild.id) in self.client.guild_status["loop_queue"]:
+
+            self.client.guild_status["loop_queue"].remove(str(interaction.guild.id))
 
 
     @app_commands.command(name = 'pause')

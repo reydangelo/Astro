@@ -33,20 +33,30 @@ async def check_idle():
     for vc in client.voice_clients:
         if vc.is_connected() and vc.is_playing() == False:
             await vc.disconnect()
-            try :
-                self.client.queues.pop(f"{str(vc.channel.guild.id)}")
-                self.client.guild_status["active_servers"].remove(str(vc.channel.guild.id))
-                self.client.guild_status["now_playing"].remove(str(vc.channel.guild.id))
-            except :
+
+            try:
+
+                client.queues.pop(f"{str(vc.channel.guild.id)}")
+
+            except:
+                
                 pass
-            try :
-                self.client.guild_status["loop_song"].remove(str(vc.channel.guild.id))
-            except :
-                pass
-            try :
-                self.client.guild_status["loop_queue"].remove(str(vc.channel.guild.id))
-            except :
-                pass
+            
+            if str(vc.channel.guild.id) in client.guild_status["active_servers"]:
+
+                client.guild_status["active_servers"].remove(str(vc.channel.guild.id))
+
+            if str(vc.channel.guild.id) in client.guild_status["now_playing"]:
+
+                client.guild_status["now_playing"].remove(str(vc.channel.guild.id))
+
+            if str(vc.channel.id) in client.guild_status["loop_song"]:
+
+                client.guild_status["loop_song"].remove(str(vc.channel.guild.id))
+                
+            if str(vc.channel.guild.id) in client.guild_status["loop_queue"]:
+
+                client.guild_status["loop_queue"].remove(str(vc.channel.guild.id))
         
    	
     

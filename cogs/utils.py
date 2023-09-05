@@ -68,7 +68,7 @@ class utils(commands.Cog):
 
 
 
-    def play_queue(self, interaction):
+    async def play_queue(self, interaction):
 
         if self.client.queues[str(interaction.guild.id)]:
 
@@ -79,6 +79,19 @@ class utils(commands.Cog):
                     self.client.queues.pop(str(interaction.guild.id))
                     self.client.guild_status["active_servers"].remove(str(interaction.guild.id))
                     self.client.guild_status["now_playing"].remove(str(interaction.guild.id))
+
+                    coro  = interaction.channel.send(f'Queue is empty now.', delete_after = 5)
+
+                    fut = asyncio.run_coroutine_threadsafe(coro, self.client.loop)
+
+                    try :
+                        
+                        fut.result()
+
+                    except:
+
+                        pass
+
                     return
                 
 
