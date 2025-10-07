@@ -1,6 +1,6 @@
 import discord
 import asyncio
-import youtube_dl
+import yt_dlp
 from discord.ext import commands
 from discord import app_commands
 
@@ -37,7 +37,7 @@ class utils(commands.Cog):
 
         if arg.startswith('https:') == False:
 
-                with youtube_dl.YoutubeDL(self.YDL_OPTIONS) as ydl:
+                with yt_dlp.YoutubeDL(self.YDL_OPTIONS) as ydl:
                     info = ydl.extract_info(f"ytsearch:{arg}", download=False)['entries'][0]
                     url = info['formats'][0]['url']
                     title = info['title']
@@ -46,7 +46,7 @@ class utils(commands.Cog):
         else:
             
 
-                with youtube_dl.YoutubeDL(self.YDL_OPTIONS) as ydl:
+                with yt_dlp.YoutubeDL(self.YDL_OPTIONS) as ydl:
                     info = ydl.extract_info(arg, download=False)
                     url = info['formats'][0]['url']
                     title = info['title']

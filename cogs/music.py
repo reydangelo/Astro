@@ -1,6 +1,6 @@
 import discord
 import sys
-from utils import utils
+from .utils import utils
 import lyricsgenius
 from discord.app_commands import Group, command
 from discord.ext import commands
